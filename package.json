@@ -8,13 +8,13 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@tailwindcss/forms": "^0.5.10",
+    "@vercel/postgres": "^0.10.0",
     "autoprefixer": "10.4.20",
     "bcryptjs": "^3.0.2",
     "clsx": "^2.1.1",
     "next": "latest",
     "next-auth": "5.0.0-beta.25",
     "postcss": "8.5.1",
-    "postgres": "^3.4.5",
     "react": "latest",
     "react-dom": "latest",
     "tailwindcss": "3.4.17",
@@ -23,9 +23,14 @@
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "22.10.7",
     "@types/react": "19.0.7",
-    "@types/react-dom": "19.0.3"
+    "@types/react-dom": "19.0.3",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2"
   }
 }

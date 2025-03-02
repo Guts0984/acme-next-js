@@ -1,8 +1,6 @@
+import { sql } from "@vercel/postgres";
 import bcrypt from "bcryptjs";
-import postgres from "postgres";
 import { invoices, customers, revenue, users } from "../lib/placeholder-data";
-
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: "require" });
 
 async function seedUsers() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -31,7 +29,6 @@ async function seedUsers() {
 
 async function seedInvoices() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
   await sql`
     CREATE TABLE IF NOT EXISTS invoices (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -57,7 +54,6 @@ async function seedInvoices() {
 
 async function seedCustomers() {
   await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
   await sql`
     CREATE TABLE IF NOT EXISTS customers (
       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -103,15 +99,17 @@ async function seedRevenue() {
 
 export async function GET() {
   try {
-    const result = await sql.begin((sql) => [
-      seedUsers(),
-      seedCustomers(),
-      seedInvoices(),
-      seedRevenue(),
-    ]);
+    // Run seeding functions sequentially without transaction
+    await seedUsers();
+    await seedCustomers();
+    await seedInvoices();
+    await seedRevenue();
 
     return Response.json({ message: "Database seeded successfully" });
-  } catch (error) {
-    return Response.json({ error }, { status: 500 });
+  } catch (error: unknown) {
+    // Type error as unknown, extract message if possible
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    return Response.json({ error: errorMessage }, { status: 500 });
   }
 }
