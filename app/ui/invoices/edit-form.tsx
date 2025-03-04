@@ -124,6 +124,7 @@ export default function EditInvoiceForm({
         </Link>
         <Button type="submit">Edit Invoice</Button>
       </div>
+      {state.message && <p>{state.message}</p>}
     </form>
   );
 }
